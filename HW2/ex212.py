@@ -52,15 +52,17 @@ def DFT_2D(gray_img):
         row_col_fft: (H, W): 2D numpy array that contains the column-wise FFT of the input image
     """
     # You need to implement the DFT here
-    
+    row_fft = np.fft.fft(gray_img, axis=-1)
+    row_col_fft = np.fft.fft(row_fft, axis=0)
+    return row_fft, row_col_fft
 
 
 
 if __name__ == '__main__':
   
     # ex1
-    # x = np.random.random(1024)
-    # print(np.allclose(DFT_slow(x), np.fft.fft(x)))
+    x = np.random.random(1024)
+    print(np.allclose(DFT_slow(x), np.fft.fft(x)))
   # ex2
     img = io_url.imread('https://img2.zergnet.com/2309662_300.jpg')
     gray_img = np.mean(img, -1)
