@@ -27,7 +27,8 @@ def padding_img(img, filter_size=3):
     Return:
         padded_img: cv2 image: the padding image
     """
-  # Need to implement here
+    # Need to implement here
+    return np.pad(img, pad_width=filter_size//2, mode='edge')
 
 def mean_filter(img, filter_size=3):
     """
@@ -39,7 +40,15 @@ def mean_filter(img, filter_size=3):
     Return:
         smoothed_img: cv2 image: the smoothed image with mean filter.
     """
-  # Need to implement here
+    result = np.zeros(img.shape)
+    padded_img = padding_img(img, filter_size)
+
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            region = padded_img[i:i+filter_size, j:j+filter_size]
+            result[i, j] = np.mean(region)
+    
+    return result.astype(img.dtype)
 
 def median_filter(img, filter_size=3):
     """
@@ -51,7 +60,16 @@ def median_filter(img, filter_size=3):
         Return:
             smoothed_img: cv2 image: the smoothed image with median filter.
     """
-  # Need to implement here
+    # Need to implement here
+    result = np.zeros(img.shape)
+    padded_img = padding_img(img, filter_size)
+
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            region = padded_img[i:i+filter_size, j:j+filter_size]
+            result[i, j] = np.median(region)
+    
+    return result.astype(img.dtype)
 
 
 def psnr(gt_img, smooth_img):
@@ -64,8 +82,8 @@ def psnr(gt_img, smooth_img):
             psnr_score: PSNR score
     """
     # Need to implement here
-
-
+    mse = np.mean((gt_img - smooth_img) ** 2)
+    return 10 * np.log10(255**2/mse)
 
 def show_res(before_img, after_img):
     """
@@ -88,8 +106,8 @@ def show_res(before_img, after_img):
 
 
 if __name__ == '__main__':
-    img_noise = "" # <- need to specify the path to the noise image
-    img_gt = "" # <- need to specify the path to the gt image
+    img_noise = "./ex1_images/noise.png" # <- need to specify the path to the noise image
+    img_gt = "./ex1_images/ori_img.png" # <- need to specify the path to the gt image
     img = read_img(img_noise)
     filter_size = 3
 
