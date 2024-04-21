@@ -14,8 +14,8 @@ def DFT_slow(data):
     DFT: Nx1: 1D numpy array 
   """
   N = data.shape[0]
-  base_matrix = np.fromfunction(lambda n, s: np.exp(-2j*np.pi*n*s/N), (N, N))
-  return base_matrix @ data
+  F = np.fromfunction(lambda n, s: np.exp(-2j*np.pi*n*s/N), (N, N))
+  return F @ data
 
 
 def show_img(origin, row_fft, row_col_fft):
